@@ -1,8 +1,37 @@
-const { buildSchema, GraphQLObjectType } = require('graphql');
+const {
+  buildSchema,
+  GraphQLObjectType,
+  GraphQLScalarType,
+  GraphQLSchema,
+  GraphQLID,
+  GraphQLString,
+} = require('graphql');
+
 const { projects, clients } = require('../sampleData');
 
-const schema = buildSchema(`
+const ClientType = new GraphQLObjectType({
+  name: 'Client',
+  fields: () => ({
+    id: { type: GraphQLID },
+    name: { type: GraphQLString },
+    email: { type: GraphQLString },
+    phone: { type: GraphQLString },
+  }),
+});
 
-`);
+const RootQuery = new GraphQLObjectType({
+  name: 'RootQueryType',
+  fields: {
+    client: {
+      type: ClientType,
+      args: { id: { type: GraphQLID } },
+      resolve(parent, args) {
+        return clients.find((client) => client.id === args.id);
+      },
+    },
+  },
+});
 
-module.exports = schema;
+module.exports = new GraphQLSchema({
+  query: RootQuery,
+});
