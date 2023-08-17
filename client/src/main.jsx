@@ -13,6 +13,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 import './index.css';
 import Home from './pages/Home.jsx';
+import NotFound from './pages/NotFound.jsx';
 
 const client = new ApolloClient({
   uri: 'http://localhost:8080/graphql',
@@ -40,6 +41,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route index element={<Home />} />
+      <Route path="*" element={<NotFound />} />
     </Route>
   )
 );
