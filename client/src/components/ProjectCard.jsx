@@ -7,7 +7,6 @@ const ProjectCard = ({ project }) => {
             <h5 className="card-title">{project.name}</h5>
             <a
               href={`/projects/${project.id}`}
-              target="_blank"
               rel="noopener noreferrer"
               className="btn btn-light"
             >
