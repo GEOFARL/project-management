@@ -1,20 +1,6 @@
 import logo from '../assets/logo.png';
 
-import { useQuery, gql } from '@apollo/client';
-
-const GET_CLIENTS = gql`
-  query {
-    clients {
-      id
-      name
-    }
-  }
-`;
-
 const Header = () => {
-  const { data } = useQuery(GET_CLIENTS);
-  console.log(data);
-
   return (
     <nav className="navbar bg-light mb-4 p-0">
       <div className="container">

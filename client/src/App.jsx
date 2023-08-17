@@ -1,3 +1,4 @@
+import Clients from './components/Clients';
 import Header from './components/Header';
 
 function App() {
@@ -5,7 +6,7 @@ function App() {
     <>
       <Header />
       <div className="container">
-        <h1>Hello World</h1>
+        <Clients />
       </div>
     </>
   );
