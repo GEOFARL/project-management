@@ -1,9 +1,10 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { useState } from 'react';
 import { FaList } from 'react-icons/fa6';
-import { GET_PROJECTS } from '../queries/projectQueries';
 import { GET_CLIENTS } from '../queries/clientQueries';
+import { ADD_PROJECT } from '../mutations/projectMutations';
 import Spinner from './Spinner';
+import { GET_PROJECTS } from '../queries/projectQueries';
 
 const AddProjectModal = () => {
   const [name, setName] = useState('');
@@ -17,10 +18,28 @@ const AddProjectModal = () => {
     error: clientsError,
   } = useQuery(GET_CLIENTS);
 
+  const [addProject] = useMutation(ADD_PROJECT, {
+    variables: {
+      name,
+      description,
+      clientId,
+      status,
+    },
+    update: (cache, { data: { addProject } }) => {
+      const data = cache.readQuery({ query: GET_PROJECTS });
+      cache.writeQuery({
+        query: GET_PROJECTS,
+        data: { ...data, projects: [...data.projects, addProject] },
+      });
+    },
+  });
+
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    if (name === '' || description === '' || status === '') {
+    console.log(name, description, clientId, status);
+
+    if (name === '' || description === '' || status === '' || clientId === '') {
       return;
     } else {
       await addProject();
@@ -112,13 +131,15 @@ const AddProjectModal = () => {
                       <label htmlFor="clients" className="form-label">
                         Client
                       </label>
-                      <select id="clients" className="form-select">
+                      <select
+                        id="clients"
+                        className="form-select"
+                        onChange={(e) => {
+                          setClientId(e.target.value);
+                        }}
+                      >
                         {clients.clients.map((client) => (
-                          <option
-                            key={client.id}
-                            value={client.id}
-                            onChange={(e) => setClientId(e.target.value)}
-                          >
+                          <option key={client.id} value={client.id}>
                             {client.name}
                           </option>
                         ))}
