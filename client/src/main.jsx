@@ -16,8 +16,10 @@ import Home from './pages/Home.jsx';
 import NotFound from './pages/NotFound.jsx';
 import Project from './pages/Project.jsx';
 
+const host = import.meta.env.VITE_APP_HOST || 'http://localhost:8080/graphql';
+
 const client = new ApolloClient({
-  uri: 'http://localhost:8080/graphql',
+  uri: host,
   cache: new InMemoryCache({
     typePolicies: {
       Query: {
